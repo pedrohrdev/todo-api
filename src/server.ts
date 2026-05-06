@@ -10,7 +10,7 @@ app.use(express.json());
 // Conection test
 app.get('/health', async (req, res): Promise<void> => {
 
-    const { data, error } = await supabase.from('users').select('count');
+    const { data, error } = await supabase.from('users').select('*', { count: 'exact', head: true});
     
     if(error) {
 
