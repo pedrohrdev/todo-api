@@ -23,18 +23,14 @@ export async function createUserService(name: string, email: string, password_ha
 
     };
     
-    const { data: existingUser, error: existingUserError } = await supabase
+    const { data: existingUser } = await supabase
         .from('users')
-        .select('*')
+        .select('id')
         .eq('email', email)
-        .single();
-
-    if(existingUserError) {
-        throw new AppError(`Error checking for existing user: ${existingUserError.message}`, 500);
-    }
+        .maybeSingle(); // 👈 troca .single() por .maybeSingle()
 
     if(existingUser) {
-        throw new AppError('User with this email already exists', 400);
+        throw new AppError('Email already in use', 409);
     }
 
     const hashedPassword = await bcrypt.hash(password_hash, 10);
