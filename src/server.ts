@@ -9,7 +9,7 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
-app.use('users', usersRouter);
+app.use('/users', usersRouter);
 
 // Conection test
 app.get('/health', async (req, res): Promise<void> => {
