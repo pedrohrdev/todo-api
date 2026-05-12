@@ -1,5 +1,6 @@
 import { AppError } from "../errors/AppError";
 import { supabase } from "../lib/supabase";
+import bcrypt from 'bcrypt';
 
 export async function createUserService(name: string, email: string, password_hash: string) {
     
@@ -20,14 +21,30 @@ export async function createUserService(name: string, email: string, password_ha
         
         throw new AppError('Password must be at least 6 characters long', 400); 
 
-    }    
+    };
+    
+    const { data: existingUser, error: existingUserError } = await supabase
+        .from('users')
+        .select('*')
+        .eq('email', email)
+        .single();
+
+    if(existingUserError) {
+        throw new AppError(`Error checking for existing user: ${existingUserError.message}`, 500);
+    }
+
+    if(existingUser) {
+        throw new AppError('User with this email already exists', 400);
+    }
+
+    const hashedPassword = await bcrypt.hash(password_hash, 10);
 
     // If everything is ok, we can create the user
 
     const { data, error } = await supabase
         .from('users')
         .insert([
-            { name, email, password_hash }
+            { name, email, password_hash: hashedPassword }
         ]);
 
         if(error) {

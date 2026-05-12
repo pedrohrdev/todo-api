@@ -1,5 +1,4 @@
 import express from 'express';
-import { supabase } from '../lib/supabase';
 
 import { createUser } from '../controllers/users.controllers';
 
