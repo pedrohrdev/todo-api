@@ -2,10 +2,14 @@ import express from 'express';
 import dotenv from 'dotenv';
 import { supabase } from './lib/supabase';
 
+import usersRouter from './routes/users.routes';
+
 dotenv.config();
 
 const app = express();
 app.use(express.json());
+
+app.use('users', usersRouter);
 
 // Conection test
 app.get('/health', async (req, res): Promise<void> => {
