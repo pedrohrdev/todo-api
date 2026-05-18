@@ -60,14 +60,35 @@ export async function loginUser(req: express.Request, res: express.Response) {
 
     }
 
-    // Here, we would typically call a service to handle the login logic
-    await loginUserService(email, password);
+    try {
 
-    // if all it's ok, we'll return a sucessful message;
-    return res.status(200).json(
-        {
-            message: "Login sucessful!"
+        const user = await loginUserService(email, password);
+        
+        return res.status(200).json(
+            {
+                message: "Logged in user sucessfuly!",
+                user
+            }
+        );
+
+    } catch(error) {
+
+        if (error instanceof AppError) {
+
+            return res.status(error.statusCode).json(
+                {
+                    message: error.message
+                }
+            );
+
         }
-    )
+
+        return res.status(500).json(
+            {
+                message: `Cannot login user. error message: ${error}`
+            }
+        );
+
+    }    
     
 }    
