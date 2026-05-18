@@ -51,33 +51,28 @@ export async function loginUser(req: express.Request, res: express.Response) {
 
     // retrieving the data
     const { email, password } = req.body;
-    
+
     // if the data isn't here, we'll return this message
     if(!email || !password) {
 
         return res.status(400).json(
-
             {
                 message: "Email and password are required"
             }
-
         )
 
     }
-    
+
     // Here, we would typically call a service to handle the login logic
     // For example, we might check if the user exists, compare the password,
     // and return a token if the login is successful.
-
     await loginUserService(email, password);
 
-    // if the login is successful, we return a sucess message,
+    // if all it's ok, we'll return a sucessful message;
     return res.status(200).json(
-
         {
-            message: "Login successful!"
+            message: "Login sucessful!"
         }
-
     )
-
+    
 }    
