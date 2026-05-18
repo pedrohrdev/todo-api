@@ -77,5 +77,7 @@ export async function loginUserService(email: string, password: string) {
         throw new AppError('Invalid email or password', 401);
     }
 
-    return user;
+    const { password_hash, ...safeUser } = user;
+
+    return safeUser;
 }    
