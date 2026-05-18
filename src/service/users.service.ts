@@ -53,3 +53,7 @@ export async function createUserService(name: string, email: string, password_ha
     return data;    
 
 }
+
+export async function loginUserService(email: string, password: string) {
+
+}    
