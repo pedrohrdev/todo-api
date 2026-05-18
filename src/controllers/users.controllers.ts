@@ -1,5 +1,7 @@
 import express from "express";
 import { createUserService } from "../service/users.service";
+import { loginUserService } from "../service/users.service";
+import { AppError } from "../errors/AppError";
 
 // Register a new user
 export async function createUser(req: express.Request, res: express.Response) {
@@ -45,3 +47,48 @@ export async function createUser(req: express.Request, res: express.Response) {
     }
 
 }
+
+export async function loginUser(req: express.Request, res: express.Response) {
+
+    // retrieving the data
+    const { email, password } = req.body;
+
+    // if the data isn't here, we'll return this message
+    if(!email || !password) {
+
+        throw new AppError('Email and password are required', 400);
+
+    }
+
+    try {
+
+        const user = await loginUserService(email, password);
+        
+        return res.status(200).json(
+            {
+                message: "Logged in user sucessfuly!",
+                user
+            }
+        );
+
+    } catch(error) {
+
+        if (error instanceof AppError) {
+
+            return res.status(error.statusCode).json(
+                {
+                    message: error.message
+                }
+            );
+
+        }
+
+        return res.status(500).json(
+            {
+                message: `Cannot login user. error message: ${error}`
+            }
+        );
+
+    }    
+    
+}    

@@ -1,6 +1,7 @@
 import { AppError } from "../errors/AppError";
 import { supabase } from "../lib/supabase";
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 export async function createUserService(name: string, email: string, password_hash: string) {
     
@@ -53,3 +54,49 @@ export async function createUserService(name: string, email: string, password_ha
     return data;    
 
 }
+
+export async function loginUserService(email: string, password: string) {
+
+
+    //  Here, we checking if the user exists in the database, if not, we throw an error
+    const { data: user } = await supabase
+        .from('users')
+        .select('*')
+        .eq('email', email)
+        .maybeSingle();
+
+    if(!user) {
+        throw new AppError('Invalid email or password', 401);
+    }
+
+
+    // If the user exists, we need to check if the password is correct,
+    // we use bcrypt to compare the provided password with the stored]
+    // password hashed in the database. If the password is invalid, we throw an error.
+
+    const isPasswordValid = await bcrypt.compare(password, user.password_hash);
+
+    if(!isPasswordValid) {
+        throw new AppError('Invalid email or password', 401);
+    }
+
+    const { password_hash, ...safeUser } = user;
+
+    // Generate the jwt
+    const token = jwt.sign(
+        {
+            id: user.id,
+            email: user.email,
+            name: user.name
+        },
+        process.env.JWT_SECRET!,
+        {
+            expiresIn: '1d'
+        }
+        
+
+
+    )
+
+    return { user: safeUser, token };
+}    

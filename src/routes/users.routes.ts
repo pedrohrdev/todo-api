@@ -1,11 +1,10 @@
+// users.routes.ts
 import express from 'express';
+import { createUser, loginUser } from '../controllers/users.controllers';
 
-import { createUser } from '../controllers/users.controllers';
-
-// Create a new router instance
 const router = express.Router();
 
-// Route to create a new user
-router.post('/', createUser);
+router.post('/register', createUser);  // POST /users/register
+router.post('/login', loginUser);       // POST /users/login
 
 export default router;

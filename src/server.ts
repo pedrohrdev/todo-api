@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import { supabase } from './lib/supabase';
 
 import usersRouter from './routes/users.routes';
+import { AppError } from './errors/AppError';
 
 dotenv.config();
 
@@ -56,6 +57,13 @@ app.get('/tasks', async (req, res): Promise<void> => {
 
         res.json(data)
 
+});
+
+app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+    if (err instanceof AppError) {
+        return res.status(err.statusCode).json({ message: err.message });
+    }
+    return res.status(500).json({ message: 'Internal server error' });
 });
 
 const PORT = process.env.PORT || 3000;
