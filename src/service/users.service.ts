@@ -56,6 +56,9 @@ export async function createUserService(name: string, email: string, password_ha
 
 export async function loginUserService(email: string, password: string) {
 
+    console.log('>>> loginUserService chamado com email:', email);
+    console.log('>>> supabase URL:', process.env.SUPABASE_URL);
+
     //  Here, we checking if the user exists in the database, if not, we throw an error
     const { data: user } = await supabase
         .from('users')
@@ -66,6 +69,10 @@ export async function loginUserService(email: string, password: string) {
     if(!user) {
         throw new AppError('Invalid email or password', 401);
     }
+
+    console.log('password recebido:', password);
+    console.log('hash no banco:', user.password_hash);
+    console.log('bcrypt result:', await bcrypt.compare(password, user.password_hash));
 
     // If the user exists, we need to check if the password is correct,
     // we use bcrypt to compare the provided password with the stored]
