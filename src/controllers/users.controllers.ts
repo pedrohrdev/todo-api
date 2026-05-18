@@ -1,6 +1,7 @@
 import express from "express";
 import { createUserService } from "../service/users.service";
 import { loginUserService } from "../service/users.service";
+import { AppError } from "../errors/AppError";
 
 // Register a new user
 export async function createUser(req: express.Request, res: express.Response) {
@@ -55,17 +56,11 @@ export async function loginUser(req: express.Request, res: express.Response) {
     // if the data isn't here, we'll return this message
     if(!email || !password) {
 
-        return res.status(400).json(
-            {
-                message: "Email and password are required"
-            }
-        )
+        throw new AppError('Email and password are required', 400);
 
     }
 
     // Here, we would typically call a service to handle the login logic
-    // For example, we might check if the user exists, compare the password,
-    // and return a token if the login is successful.
     await loginUserService(email, password);
 
     // if all it's ok, we'll return a sucessful message;
