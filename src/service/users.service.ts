@@ -2,6 +2,8 @@ import { AppError } from "../errors/AppError";
 import { supabase } from "../lib/supabase";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import userRepository from '../repository/users.repository';
+import checkExistingUser from "../repository/users.repository";
 
 export async function createUserService(name: string, email: string, password_hash: string) {
     
@@ -24,12 +26,8 @@ export async function createUserService(name: string, email: string, password_ha
 
     };
     
-    const { data: existingUser } = await supabase
-        .from('users')
-        .select('id')
-        .eq('email', email)
-        .maybeSingle(); // 👈 troca .single() por .maybeSingle()
-
+    const existingUser = await userRepository.checkExistingUser(email)
+    
     if(existingUser) {
         throw new AppError('Email already in use', 409);
     }
@@ -38,32 +36,14 @@ export async function createUserService(name: string, email: string, password_ha
 
     // If everything is ok, we can create the user
 
-    const { data, error } = await supabase
-        .from('users')
-        .insert([
-            { name, email, password_hash: hashedPassword }
-        ]);
-
-        if(error) {
-
-            throw new AppError(`Cannot create user. error message: ${error.message}`, 500);
-            
-        }
-
-    // If the user is created successfully, we return the created user data
-    return data;    
-
+    return await userRepository.createUser(name, email, hashedPassword)
 }
 
 export async function loginUserService(email: string, password: string) {
 
 
     //  Here, we checking if the user exists in the database, if not, we throw an error
-    const { data: user } = await supabase
-        .from('users')
-        .select('*')
-        .eq('email', email)
-        .maybeSingle();
+    const user = await userRepository.loginUser(email, password)
 
     if(!user) {
         throw new AppError('Invalid email or password', 401);
