@@ -37,28 +37,6 @@ app.get('/health', async (req, res): Promise<void> => {
 
 });
 
-// Search for all active tasks
-app.get('/tasks', async (req, res): Promise<void> => {
-
-    const { data, error } = await supabase
-        .from('tasks')
-        .select('*, users(email)')
-        .eq('is_active', true);
-
-        if(error) {
-            res.status(500).json(
-                {
-                    error: error.message
-                }
-            )
-
-            return
-        };
-
-        res.json(data)
-
-});
-
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
     if (err instanceof AppError) {
         return res.status(err.statusCode).json({ message: err.message });
