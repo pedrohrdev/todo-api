@@ -28,14 +28,23 @@ export async function createUser(req: express.Request, res: express.Response) {
     // If there's an error, we catch it and return a 500 status with the error message    
     } catch(error) {
 
+        if(error instanceof AppError) {
+
+            return res.status(error.statusCode).json(
+                {
+                    message: error.message
+                }
+            );
+
+        }
+
         return res.status(500).json(
             {
                 message: `Cannot create user. error message: ${error}`
             }
-        )
+        )        
 
-    }
-
+    }    
 }
 
 export async function loginUser(req: express.Request, res: express.Response) {
@@ -81,4 +90,4 @@ export async function loginUser(req: express.Request, res: express.Response) {
 
     }    
     
-}    
+}
