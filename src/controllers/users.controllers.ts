@@ -1,6 +1,6 @@
 import express from "express";
-import { createUserService } from "../service/users.service";
-import { loginUserService } from "../service/users.service";
+import { createUserService } from "../services/users.service";
+import { loginUserService } from "../services/users.service";
 import { AppError } from "../errors/AppError";
 
 // Register a new user
