@@ -1,9 +1,7 @@
 import { AppError } from "../errors/AppError";
-import { supabase } from "../lib/supabase";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import userRepository from '../repository/users.repository';
-import checkExistingUser from "../repository/users.repository";
 
 export async function createUserService(name: string, email: string, password_hash: string) {
     
@@ -11,20 +9,6 @@ export async function createUserService(name: string, email: string, password_ha
     // For example, you might check if the user already exists,
     // hash the password, and save the user to the database.
     // This is just a placeholder implementation.
-
-    // Validating the input data, to know if data is empty or not, if it's empty, we throw an error
-    if(!name || !email || !password_hash) {
-
-        throw new AppError('Email and password and name are required', 400);
-
-    }    
-    
-    // More specific assessments
-    if(password_hash.length < 6) {
-        
-        throw new AppError('Password must be at least 6 characters long', 400); 
-
-    };
     
     const existingUser = await userRepository.checkExistingUser(email)
     
