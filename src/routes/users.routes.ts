@@ -2,7 +2,7 @@
 import express from 'express';
 import { createUser,loginUser } from '../controllers/users.controllers';
 import { validate } from '../validators/validate';
-import { createUserSchema } from '../schemas/users.schema';
+import { createUserSchema, loginUserSchema } from '../schemas/users.schema';
 
 const router = express.Router();
 
@@ -15,6 +15,10 @@ router.post(
 ); 
 
 // POST /users/login
-router.post('/login', loginUser);
+router.post(
+    '/login',
+    validate(loginUserSchema),    
+    loginUser
+);
 
 export default router;

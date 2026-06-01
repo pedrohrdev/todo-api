@@ -22,3 +22,17 @@ export const createUserSchema = z.object(
             .max(50, 'Your password must be a maximum of 50 characters long.')
     }
 );
+
+export const loginUserSchema = z.object(
+    {
+        email: z
+            .string()
+            .email('You need to send a valid email adress.')
+            .toLowerCase(),
+
+        password: z
+            .string()
+            .min(6, 'Your password must be at least 6 characters long.')
+            .max(50, 'Your password must be a maximum of 50 characters long.')            
+    }
+)
