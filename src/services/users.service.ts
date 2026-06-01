@@ -11,13 +11,6 @@ export async function createUserService(name: string, email: string, password_ha
     // For example, you might check if the user already exists,
     // hash the password, and save the user to the database.
     // This is just a placeholder implementation.
-
-    // Validating the input data, to know if data is empty or not, if it's empty, we throw an error
-    if(!name || !email || !password_hash) {
-
-        throw new AppError('Email and password and name are required', 400);
-
-    }    
     
     // More specific assessments
     if(password_hash.length < 6) {

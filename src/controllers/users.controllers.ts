@@ -52,13 +52,6 @@ export async function loginUser(req: express.Request, res: express.Response) {
     // retrieving the data
     const { email, password } = req.body;
 
-    // if the data isn't here, we'll return this message
-    if(!email || !password) {
-
-        throw new AppError('Email and password are required', 400);
-
-    }
-
     try {
 
         const user = await loginUserService(email, password);
