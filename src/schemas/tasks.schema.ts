@@ -27,4 +27,6 @@ export const createTaskSchema = z.object(
     }
 )
 
-export const updateTaskSchema = createTaskSchema.partial()
+export const updateTaskSchema = createTaskSchema.partial();
+
+// Se voce estiver lendo isso Moises, proximo passo amanha é fazer o repository
