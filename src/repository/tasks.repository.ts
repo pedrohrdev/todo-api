@@ -27,3 +27,18 @@ async function createTask(
     return { data, error };
 
 }
+
+async function updateTask(
+    id: number,
+    fields: object
+) {
+
+    const { data, error } = await supabase
+        .from('tasks')
+        .update(fields)
+        .eq('id', id)
+        .select()
+        .single();
+
+    return { data, error };
+}
