@@ -1,11 +1,13 @@
 import { supabase } from '../lib/supabase';
+import { createTaskSchema, updateTaskSchema } from '../schemas/tasks.schema';
+import { z } from 'zod';
+
+type CreateTaskInput = z.infer<typeof updateTaskSchema>;
+type UpdateTaskInput = z.infer<typeof updateTaskSchema>;
 
 async function createTask(
     userId: number,
-    title: string,
-    description: string | undefined,
-    type_task: string,
-    status: string
+    fields: CreateTaskInput
 ) {
 
     const { data, error } = await supabase
@@ -14,10 +16,7 @@ async function createTask(
             [
                 {
                     user_id: userId,
-                    title,
-                    description,
-                    type_task,
-                    status
+                    ...fields
                 }
             ]
         )
@@ -30,7 +29,7 @@ async function createTask(
 
 async function updateTask(
     id: number,
-    fields: object
+    fields: UpdateTaskInput
 ) {
 
     const { data, error } = await supabase
@@ -42,3 +41,5 @@ async function updateTask(
 
     return { data, error };
 }
+
+export const tasksRepository = { createTask, updateTask}
