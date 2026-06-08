@@ -7,12 +7,12 @@ async function createTaskController(
     res: Response
 ) {
 
-    const { title, description, type_task, status } = req.body;
-    const userId = req.user.id; 
+    const userId = req.user!.id; 
+    const fields = req.body;
 
     try {
 
-        await taskService.createTaskService(userId, { title, description, type_task, status });
+        await taskService.createTaskService(userId, fields);
 
         res.status(201).json(
             {
