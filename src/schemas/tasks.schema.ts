@@ -28,3 +28,6 @@ export const createTaskSchema = z.object(
 )
 
 export const updateTaskSchema = createTaskSchema.partial();
+
+export type CreateTaskInput = z.infer<typeof createTaskSchema>;
+export type UpdateTaskInput = z.infer<typeof updateTaskSchema>;
