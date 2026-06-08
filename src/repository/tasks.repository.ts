@@ -3,7 +3,7 @@ import { createTaskSchema, updateTaskSchema } from '../schemas/tasks.schema';
 import { z } from 'zod';
 
 type CreateTaskInput = z.infer<typeof updateTaskSchema>;
-type UpdateTaskInput = z.infer<typeof updateTaskSchema>;
+type UpdateTaskInput = z.infer<typeof createTaskSchema>;
 
 async function createTask(
     userId: number,
