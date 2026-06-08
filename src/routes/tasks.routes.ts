@@ -13,3 +13,5 @@ router.post(
     validate(createTaskSchema),
     createTaskController
 );
+
+export default router;
