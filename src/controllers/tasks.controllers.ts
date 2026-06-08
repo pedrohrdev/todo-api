@@ -2,7 +2,7 @@ import { taskService } from '../services/tasks.service';
 import { Request, Response, } from 'express'
 import { AppError } from "../errors/AppError";
 
-async function createTaskController(
+export async function createTaskController(
     req: Request,
     res: Response
 ) {
