@@ -2,8 +2,8 @@ import { supabase } from '../lib/supabase';
 import { createTaskSchema, updateTaskSchema } from '../schemas/tasks.schema';
 import { z } from 'zod';
 
-type CreateTaskInput = z.infer<typeof updateTaskSchema>;
-type UpdateTaskInput = z.infer<typeof createTaskSchema>;
+type CreateTaskInput = z.infer<typeof createTaskSchema>;
+type UpdateTaskInput = z.infer<typeof updateTaskSchema>;
 
 async function createTask(
     userId: number,
