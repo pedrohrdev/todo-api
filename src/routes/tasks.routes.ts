@@ -2,7 +2,7 @@ import express from 'express';
 import { createTaskController } from '../controllers/tasks.controllers';
 import { authMiddleware } from '../middleware/auth.middleware';
 import { validate } from '../validators/validate';
-import { createTaskSchema } from '../schemas/tasks.schema';
+import { createTaskSchema, updateTaskSchema } from '../schemas/tasks.schema';
 
 const router = express.Router();
 
