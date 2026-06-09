@@ -12,10 +12,11 @@ async function createTaskService(
 
 async function updateTaskService(
     id: number,
+    userId: number,
     fields: UpdateTaskInput
 ) {
 
-    return tasksRepository.updateTask(id, fields);
+    return tasksRepository.updateTask(id, userId, fields);
 
 };
 

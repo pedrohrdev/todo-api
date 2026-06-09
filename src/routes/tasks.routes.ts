@@ -1,5 +1,5 @@
 import express from 'express';
-import { createTaskController } from '../controllers/tasks.controllers';
+import { createTaskController, updateTaskController } from '../controllers/tasks.controllers';
 import { authMiddleware } from '../middleware/auth.middleware';
 import { validate } from '../validators/validate';
 import { createTaskSchema, updateTaskSchema } from '../schemas/tasks.schema';
@@ -13,5 +13,13 @@ router.post(
     validate(createTaskSchema),
     createTaskController
 );
+
+// PUT /tasks/:id
+router.put(
+    '/:id',
+    authMiddleware,
+    validate(updateTaskSchema),
+    updateTaskController
+)
 
 export default router;

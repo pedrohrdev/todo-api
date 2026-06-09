@@ -1,5 +1,6 @@
 import { supabase } from '../lib/supabase';
 import { CreateTaskInput, UpdateTaskInput } from '../schemas/tasks.schema';
+import { AppError } from '../errors/AppError';
 
 async function createTask(
     userId: number,
@@ -19,23 +20,30 @@ async function createTask(
         .select()
         .single();
 
-    return { data, error };
+    if(error) throw new AppError(error.message, 400);    
+
+    return data;
 
 }
 
 async function updateTask(
     id: number,
+    userId: number,
     fields: UpdateTaskInput
+
 ) {
 
     const { data, error } = await supabase
         .from('tasks')
         .update(fields)
         .eq('id', id)
+        .eq('user_id', userId)
         .select()
         .single();
 
-    return { data, error };
+    if(error) throw new AppError(error.message, 400);
+
+    return data;
 }
 
 export const tasksRepository = { createTask, updateTask}

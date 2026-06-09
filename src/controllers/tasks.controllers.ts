@@ -43,16 +43,25 @@ export async function createTaskController(
 }
 
 export async function updateTaskController(
-    req: Request,
+    req: Request<{ id: string }>,
     res: Response
 ) {
 
     const taskId = parseInt(req.params.id as string);
+    const userId = req.user!.id;
     const fields = req.body;
+
+    if(isNaN(taskId)) {
+        return res.status(400).json(
+            {
+                message: "Invalid task id"
+            }
+        );
+    }
 
     try {
 
-        await taskService.updateTaskService(taskId, fields);
+        await taskService.updateTaskService(taskId, userId, fields);
 
         res.status(200).json(
             {
@@ -69,6 +78,12 @@ export async function updateTaskController(
                 }
             );
         }
+
+        return res.status(500).json(
+            {
+                message: `Cannot create task. error message: ${error}`
+            }
+        )           
 
     }
 
