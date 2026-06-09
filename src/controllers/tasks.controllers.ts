@@ -88,3 +88,35 @@ export async function updateTaskController(
     }
 
 }
+
+export async function getTasksController(
+    req: Request,
+    res: Response
+) {
+
+    const userId = req.user!.id;
+
+    try {
+
+        const tasks = await taskService.getTasksService(userId);
+
+        res.status(200).json(tasks);
+
+    } catch(error) {
+        
+        if(error instanceof AppError) {
+            return res.status(error.statusCode).json(
+                {
+                    message: error.message
+                }
+            );
+        }
+
+        return res.status(500).json(
+            {
+                message: `Cannot get tasks. error message: ${error}`
+            }
+        )
+    }
+
+}
