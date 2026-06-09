@@ -20,4 +20,10 @@ async function updateTaskService(
 
 };
 
-export const taskService = { createTaskService, updateTaskService }
+async function getTasksService(userId: number) {
+
+    return tasksRepository.getTasks(userId);
+
+}
+
+export const taskService = { createTaskService, updateTaskService, getTasksService }
