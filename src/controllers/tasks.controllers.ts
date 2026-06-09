@@ -81,7 +81,7 @@ export async function updateTaskController(
 
         return res.status(500).json(
             {
-                message: `Cannot create task. error message: ${error}`
+                message: `Cannot update task. error message: ${error}`
             }
         )           
 

@@ -22,6 +22,8 @@ async function createTask(
 
     if(error) throw new AppError(error.message, 400);    
 
+    if(!data) throw new AppError("Failed to create task", 500);
+
     return data;
 
 }
@@ -43,6 +45,8 @@ async function updateTask(
 
     if(error) throw new AppError(error.message, 400);
 
+    if(!data) throw new AppError("Task not found", 404); // ← adiciona
+
     return data;
 }
 
@@ -55,7 +59,7 @@ async function getTasks(userId: number) {
 
     if(error) throw new AppError(error.message, 400);
 
-    return data;
+    return data ?? [];
 
 }
 
