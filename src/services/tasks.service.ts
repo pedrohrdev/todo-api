@@ -32,4 +32,10 @@ async function getTaskByIdService(id: number, userId: number) {
 
 }
 
-export const taskService = { createTaskService, updateTaskService, getTasksService, getTaskByIdService };
+async function deleteTaskService(id: number, userId: number) {
+
+    return tasksRepository.deleteTask(id, userId);
+
+}
+
+export const taskService = { createTaskService, updateTaskService, getTasksService, getTaskByIdService, deleteTaskService };
