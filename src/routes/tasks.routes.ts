@@ -1,5 +1,5 @@
 import express from 'express';
-import { createTaskController, updateTaskController, getTasksController, getTaskByIdController } from '../controllers/tasks.controllers';
+import { createTaskController, updateTaskController, getTasksController, getTaskByIdController, deleteTaskController } from '../controllers/tasks.controllers';
 import { authMiddleware } from '../middleware/auth.middleware';
 import { validate } from '../validators/validate';
 import { createTaskSchema, updateTaskSchema } from '../schemas/tasks.schema';
@@ -34,6 +34,13 @@ router.get(
     '/:id',
     authMiddleware,
     getTaskByIdController
+)
+
+// DELETE /tasks/:id
+router.delete(
+    '/:id',
+    authMiddleware,
+    deleteTaskController
 )
 
 export default router;
