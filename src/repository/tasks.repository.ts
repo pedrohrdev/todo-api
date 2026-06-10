@@ -63,4 +63,20 @@ async function getTasks(userId: number) {
 
 }
 
-export const tasksRepository = { createTask, updateTask, getTasks}
+async function getTaskById(id: number, userId: number) {
+
+    const { data, error } = await supabase
+        .from('tasks')
+        .select('*')
+        .eq('id', id)
+        .eq('user_id', userId)
+        .single();
+
+    if(error) throw new AppError(error.message, 400);
+
+    if(!data) throw new AppError("Task not found", 404);
+
+    return data;
+}
+
+export const tasksRepository = { createTask, updateTask, getTasks, getTaskById };
