@@ -26,4 +26,10 @@ async function getTasksService(userId: number) {
 
 }
 
-export const taskService = { createTaskService, updateTaskService, getTasksService }
+async function getTaskByIdService(id: number, userId: number) {
+
+    return tasksRepository.getTaskById(id, userId);
+
+}
+
+export const taskService = { createTaskService, updateTaskService, getTasksService, getTaskByIdService };
