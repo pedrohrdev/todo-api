@@ -1,16 +1,11 @@
 import { AppError } from "../errors/AppError";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import userRepository from '../repository/users.repository';
+import { usersRepository } from '../repository/users.repository';
 
-export async function createUserService(name: string, email: string, password_hash: string) {
+async function createUser(name: string, email: string, password_hash: string) {
     
-    // Here you would typically add logic to create the user
-    // For example, you might check if the user already exists,
-    // hash the password, and save the user to the database.
-    // This is just a placeholder implementation.
-    
-    const existingUser = await userRepository.checkExistingUser(email)
+    const existingUser = await usersRepository.checkExistingUser(email)
     
     if(existingUser) {
         throw new AppError('Email already in use', 409);
@@ -20,23 +15,16 @@ export async function createUserService(name: string, email: string, password_ha
 
     // If everything is ok, we can create the user
 
-    return await userRepository.createUser(name, email, hashedPassword)
+    return usersRepository.createUser(name, email, hashedPassword)
 }
 
-export async function loginUserService(email: string, password: string) {
+async function loginUser(email: string, password: string) {
 
-
-    //  Here, we checking if the user exists in the database, if not, we throw an error
-    const user = await userRepository.loginUser(email, password)
+    const user = await usersRepository.loginUser(email, password)
 
     if(!user) {
         throw new AppError('Invalid email or password', 401);
     }
-
-
-    // If the user exists, we need to check if the password is correct,
-    // we use bcrypt to compare the provided password with the stored]
-    // password hashed in the database. If the password is invalid, we throw an error.
 
     const isPasswordValid = await bcrypt.compare(password, user.password_hash);
 
@@ -63,4 +51,11 @@ export async function loginUserService(email: string, password: string) {
     )
 
     return { user: safeUser, token };
-}    
+}
+
+export const usersService = {
+
+    createUser,
+    loginUser
+
+};
