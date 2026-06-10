@@ -1,6 +1,5 @@
 import express from "express";
-import { createUserService } from "../services/users.service";
-import { loginUserService } from "../services/users.service";
+import { usersService } from "../services/users.service";
 import { AppError } from "../errors/AppError";
 
 // Register a new user
@@ -9,23 +8,16 @@ export async function createUser(req: express.Request, res: express.Response) {
     // retrieving the data
     const { name, email, password } = req.body;
 
-    // Here, we'll call the service to
-    // createUser, so, the data is ok to insert,
-    // so, let's make it
-
     try {
 
-        // Here, we call the servicve to create the user
-        await createUserService(name, email, password);
+        await usersService.createUser(name, email, password);
 
-        // If the user is created successfully, we return a success message
         return res.status(201).json(
             {
                 message: "Created user sucessfuly!"
             }
         )
 
-    // If there's an error, we catch it and return a 500 status with the error message    
     } catch(error) {
 
         if(error instanceof AppError) {
@@ -54,7 +46,7 @@ export async function loginUser(req: express.Request, res: express.Response) {
 
     try {
 
-        const user = await loginUserService(email, password);
+        const user = await usersService.loginUser(email, password);
         
         return res.status(200).json(
             {

@@ -1,4 +1,4 @@
-import { taskService } from '../services/tasks.service';
+import { tasksService } from '../services/tasks.service';
 import { Request, Response, } from 'express'
 import { AppError } from "../errors/AppError";
 
@@ -12,7 +12,7 @@ export async function createTaskController(
 
     try {
 
-        await taskService.createTaskService(userId, fields);
+        await tasksService.createTask(userId, fields);
 
         res.status(201).json(
             {
@@ -61,7 +61,7 @@ export async function updateTaskController(
 
     try {
 
-        await taskService.updateTaskService(taskId, userId, fields);
+        await tasksService.updateTask(taskId, userId, fields);
 
         res.status(200).json(
             {
@@ -98,7 +98,7 @@ export async function getTasksController(
 
     try {
 
-        const tasks = await taskService.getTasksService(userId);
+        const tasks = await tasksService.getTasks(userId);
 
         res.status(200).json(tasks);
 
@@ -139,7 +139,7 @@ export async function getTaskByIdController(
 
     try {
 
-        const task = await taskService.getTaskByIdService(taskId, userId);
+        const task = await tasksService.getTaskById(taskId, userId);
         
         res.status(200).json(task);
 
@@ -179,7 +179,7 @@ export async function deleteTaskController(
 
     try {
 
-        await taskService.deleteTaskService(taskId, userId);
+        await tasksService.deleteTask(taskId, userId);
 
         res.status(200).json(
             {
