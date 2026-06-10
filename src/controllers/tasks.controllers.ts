@@ -160,3 +160,47 @@ export async function getTaskByIdController(
     }
 
 }
+
+export async function deleteTaskController(
+    req: Request<{ id: string }>,
+    res: Response
+) {
+
+    const taskId = parseInt(req.params.id as string);
+    const userId = req.user!.id;
+    
+    if(isNaN(taskId)) {
+        return res.status(400).json(
+            {
+                message: "Invalid task id"
+            }
+        );
+    }
+
+    try {
+
+        await taskService.deleteTaskService(taskId, userId);
+
+        res.status(200).json(
+            {
+                message: "Task deleted successfully!"
+            }
+        )
+
+    } catch(error) {
+        if(error instanceof AppError) {
+            return res.status(error.statusCode).json(
+                {
+                    message: error.message
+                }
+            );
+        }
+
+        return res.status(500).json(
+            {
+                message: `Cannot delete task. error message: ${error}`
+            }
+        )
+    }
+
+}
