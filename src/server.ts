@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import { supabase } from './lib/supabase';
 
 import usersRouter from './routes/users.routes';
+import tasksRouter from './routes/tasks.routes';
 import { AppError } from './errors/AppError';
 
 dotenv.config();
@@ -11,6 +12,7 @@ const app = express();
 app.use(express.json());
 
 app.use('/users', usersRouter);
+app.use('/tasks', tasksRouter);
 
 // Conection test
 app.get('/health', async (req, res): Promise<void> => {
