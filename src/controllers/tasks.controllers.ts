@@ -120,3 +120,43 @@ export async function getTasksController(
     }
 
 }
+
+export async function getTaskByIdController(
+    req: Request<{ id: string }>,
+    res: Response
+) {
+
+    const taskId = parseInt(req.params.id as string);
+    const userId = req.user!.id;
+
+    if(isNaN(taskId)) {
+        return res.status(400).json(
+            {
+                message: "Invalid task id"
+            }
+        );
+    }
+
+    try {
+
+        const task = await taskService.getTaskByIdService(taskId, userId);
+        
+        res.status(200).json(task);
+
+    } catch(error) {
+        if(error instanceof AppError) {
+            return res.status(error.statusCode).json(
+                {
+                    message: error.message
+                }
+            );
+        }
+
+        return res.status(500).json(
+            {
+                message: `Cannot get task. error message: ${error}`
+            }
+        )
+    }
+
+}
