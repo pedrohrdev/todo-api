@@ -1,5 +1,5 @@
 import express from 'express';
-import { createTaskController, updateTaskController, getTasksController } from '../controllers/tasks.controllers';
+import { createTaskController, updateTaskController, getTasksController, getTaskByIdController } from '../controllers/tasks.controllers';
 import { authMiddleware } from '../middleware/auth.middleware';
 import { validate } from '../validators/validate';
 import { createTaskSchema, updateTaskSchema } from '../schemas/tasks.schema';
@@ -27,6 +27,13 @@ router.get(
     '/',
     authMiddleware,
     getTasksController
+)
+
+// GET /tasks/:id
+router.get(
+    '/:id',
+    authMiddleware,
+    getTaskByIdController
 )
 
 export default router;
