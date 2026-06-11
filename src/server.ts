@@ -14,31 +14,6 @@ app.use(express.json());
 app.use('/users', usersRouter);
 app.use('/tasks', tasksRouter);
 
-// Conection test
-app.get('/health', async (req, res): Promise<void> => {
-
-    const { data, error } = await supabase.from('users').select('*', { count: 'exact', head: true});
-    
-    if(error) {
-
-        res.status(500).json(
-            {
-                error: error.message
-            }
-        )
-
-        return
-
-    };
-
-    res.json(
-        {
-            ok: true, data
-        }
-    );
-
-});
-
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
     if (err instanceof AppError) {
         return res.status(err.statusCode).json({ message: err.message });
