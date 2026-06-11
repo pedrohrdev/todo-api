@@ -1,8 +1,15 @@
 import express from 'express';
-import { createTaskController, updateTaskController, getTasksController, getTaskByIdController, deleteTaskController } from '../controllers/tasks.controllers';
+import { 
+    createTaskController,
+    updateTaskController,
+    getTasksController,
+    getTaskByIdController,
+    deleteTaskController
+} from '../controllers/tasks.controllers';
+import { createTaskSchema, updateTaskSchema } from '../schemas/tasks.schema';
+
 import { authMiddleware } from '../middleware/auth.middleware';
 import { validate } from '../validators/validate';
-import { createTaskSchema, updateTaskSchema } from '../schemas/tasks.schema';
 
 const router = express.Router();
 
