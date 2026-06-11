@@ -1,13 +1,16 @@
 import { tasksService } from '../services/tasks.service';
 import { Request, Response, } from 'express'
 import { AppError } from "../errors/AppError";
+import { assertAuthenticated } from '../middleware/auth-assertion.middleware';
 
 export async function createTaskController(
     req: Request,
     res: Response
 ) {
 
-    const userId = req.user!.id; 
+    assertAuthenticated(req);
+
+    const userId = req.user.id; 
     const fields = req.body;
 
     try {
@@ -43,12 +46,14 @@ export async function createTaskController(
 }
 
 export async function updateTaskController(
-    req: Request<{ id: string }>,
+    req: Request,
     res: Response
 ) {
 
+    assertAuthenticated(req);
+
     const taskId = parseInt(req.params.id as string);
-    const userId = req.user!.id;
+    const userId = req.user.id;
     const fields = req.body;
 
     if(isNaN(taskId)) {
@@ -94,7 +99,9 @@ export async function getTasksController(
     res: Response
 ) {
 
-    const userId = req.user!.id;
+    assertAuthenticated(req);
+
+    const userId = req.user.id;
 
     try {
 
@@ -122,12 +129,14 @@ export async function getTasksController(
 }
 
 export async function getTaskByIdController(
-    req: Request<{ id: string }>,
+    req: Request,
     res: Response
 ) {
 
+    assertAuthenticated(req);
+
     const taskId = parseInt(req.params.id as string);
-    const userId = req.user!.id;
+    const userId = req.user.id;
 
     if(isNaN(taskId)) {
         return res.status(400).json(
@@ -162,12 +171,14 @@ export async function getTaskByIdController(
 }
 
 export async function deleteTaskController(
-    req: Request<{ id: string }>,
+    req: Request,
     res: Response
 ) {
 
+    assertAuthenticated(req);
+
     const taskId = parseInt(req.params.id as string);
-    const userId = req.user!.id;
+    const userId = req.user.id;
     
     if(isNaN(taskId)) {
         return res.status(400).json(
