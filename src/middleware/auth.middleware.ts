@@ -1,13 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { AppError } from '../errors/AppError';
-
-interface TokenPayload {
-    id: number;
-    email: string;
-    name: string;
-}
-
+import { TokenPayload } from '../types/token-payload';
 declare global {
     namespace Express {
         interface Request {

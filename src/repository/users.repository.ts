@@ -32,4 +32,4 @@ async function loginUser(email: string, password: string) {
 }
 
 
-export default {checkExistingUser, createUser, loginUser}
+export const usersRepository = {checkExistingUser, createUser, loginUser}               
