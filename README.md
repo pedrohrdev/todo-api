@@ -1,6 +1,6 @@
 # 📝 TODO API
 
-Uma API RESTful para gerenciamento de tarefas (todos) com autenticação segura de usuários, e sistema de metas e progresso desenvolvida em TypeScript com Express.js e Supabase.
+Uma API RESTful para gerenciamento de tarefas com autenticação segura de usuários, e sistema de metas e progresso desenvolvida em TypeScript com Express.js e Supabase.
 
 ---
 
