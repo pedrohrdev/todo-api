@@ -30,6 +30,19 @@ Este é um projeto colaborativo desenvolvido por:
   - Tratamento centralizado de erros
   - Classe AppError personalizada
 
+### CRUD de Tarefas
+- ✅ **Operações de tarefas**
+  - `GET /tasks` - Listar todas as tarefas ativas do usuário
+  - `POST /tasks` - Criar nova tarefa
+  - `PUT /tasks/:id` - Atualizar tarefa
+  - `DELETE /tasks/:id` - Deletar tarefa
+
+### Middleware de Autenticação
+- ✅ **Proteção de rotas**
+  - Validação de JWT em rotas protegidas
+  - Associação de tarefas ao usuário autenticado
+  - Verificação segura de tokens
+
 ### Infraestrutura & Boas Práticas
 - ✅ **Estrutura em camadas**
   - Controllers (requisições HTTP)
@@ -40,6 +53,7 @@ Este é um projeto colaborativo desenvolvido por:
 - ✅ **Middleware global**
   - Error handler centralizado
   - Validação de requisições
+  - Autenticação JWT
 
 - ✅ **Supabase Integration**
   - Conexão configurável por variáveis de ambiente
@@ -54,17 +68,7 @@ Este é um projeto colaborativo desenvolvido por:
 
 ## 🚧 O que falta fazer
 
-### Funcionalidade de Tarefas (TODO)
-- ⏳ **CRUD de tarefas**
-  - `GET /tasks` - Listar todas as tarefas ativas do usuário
-  - `POST /tasks` - Criar nova tarefa
-  - `PUT /tasks/:id` - Atualizar tarefa
-  - `DELETE /tasks/:id` - Deletar tarefa
-
-- ⏳ **Middleware de autenticação**
-  - Validação de JWT em rotas protegidas
-  - Associação de tarefas ao usuário autenticado
-
+### Funcionalidades Avançadas (TODO)
 - ⏳ **Endpoints relacionados**
   - Marcar tarefa como concluída
   - Filtrar tarefas por status
@@ -144,7 +148,7 @@ CREATE TABLE users (
 );
 ```
 
-#### Tabela `tasks` (para futuros endpoints)
+#### Tabela `tasks`
 ```sql
 CREATE TABLE tasks (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -227,6 +231,88 @@ Content-Type: application/json
 }
 ```
 
+### Tarefas (Autenticado)
+
+#### Listar todas as tarefas
+```http
+GET /tasks
+Authorization: Bearer {token}
+```
+
+**Resposta (200)**
+```json
+[
+  {
+    "id": "uuid-da-tarefa",
+    "user_id": "uuid-do-usuario",
+    "title": "Minha primeira tarefa",
+    "description": "Descrição da tarefa",
+    "is_active": true,
+    "created_at": "2026-07-10T10:00:00Z",
+    "updated_at": "2026-07-10T10:00:00Z"
+  }
+]
+```
+
+#### Criar nova tarefa
+```http
+POST /tasks
+Authorization: Bearer {token}
+Content-Type: application/json
+
+{
+  "title": "Nova tarefa",
+  "description": "Descrição da tarefa"
+}
+```
+
+**Resposta (201)**
+```json
+{
+  "id": "uuid-da-tarefa",
+  "user_id": "uuid-do-usuario",
+  "title": "Nova tarefa",
+  "description": "Descrição da tarefa",
+  "is_active": true,
+  "created_at": "2026-07-10T10:00:00Z",
+  "updated_at": "2026-07-10T10:00:00Z"
+}
+```
+
+#### Atualizar tarefa
+```http
+PUT /tasks/:id
+Authorization: Bearer {token}
+Content-Type: application/json
+
+{
+  "title": "Tarefa atualizada",
+  "description": "Nova descrição",
+  "is_active": true
+}
+```
+
+**Resposta (200)**
+```json
+{
+  "id": "uuid-da-tarefa",
+  "user_id": "uuid-do-usuario",
+  "title": "Tarefa atualizada",
+  "description": "Nova descrição",
+  "is_active": true,
+  "created_at": "2026-07-10T10:00:00Z",
+  "updated_at": "2026-07-10T10:30:00Z"
+}
+```
+
+#### Deletar tarefa
+```http
+DELETE /tasks/:id
+Authorization: Bearer {token}
+```
+
+**Resposta (204 No Content)**
+
 ### Health Check
 
 ```http
@@ -250,18 +336,24 @@ GET /health
 ```
 src/
 ├── controllers/
-│   └── users.controllers.ts      # Handlers HTTP de usuários
+│   ├── users.controllers.ts       # Handlers HTTP de usuários
+│   └── tasks.controllers.ts       # Handlers HTTP de tarefas
 ├── routes/
-│   └── users.routes.ts           # Rotas de usuários
+│   ├── users.routes.ts            # Rotas de usuários
+│   └── tasks.routes.ts            # Rotas de tarefas
 ├── services/
-│   └── users.service.ts          # Lógica de negócio
+│   ├── users.service.ts           # Lógica de negócio de usuários
+│   └── tasks.service.ts           # Lógica de negócio de tarefas
 ├── repository/
-│   └── users.repository.ts       # Acesso a dados (futuro)
+│   ├── users.repository.ts        # Acesso a dados de usuários
+│   └── tasks.repository.ts        # Acesso a dados de tarefas
+├── middleware/
+│   └── auth.middleware.ts         # Middleware de autenticação JWT
 ├── lib/
-│   └── supabase.ts              # Configuração Supabase
+│   └── supabase.ts                # Configuração Supabase
 ├── errors/
-│   └── AppError.ts              # Classe de erro customizada
-└── server.ts                     # Servidor principal
+│   └── AppError.ts                # Classe de erro customizada
+└── server.ts                       # Servidor principal
 ```
 
 ---
@@ -317,8 +409,8 @@ Como este é um projeto em dupla, para contribuir:
 
 ## 📝 Roadmap
 
-- [ ] Implementar endpoints CRUD completos de tarefas
-- [ ] Adicionar middleware de autenticação JWT
+- [x] Implementar endpoints CRUD completos de tarefas
+- [x] Adicionar middleware de autenticação JWT
 - [ ] Implementar testes unitários e de integração
 - [ ] Adicionar validação de dados com Zod/Joi
 - [ ] Configurar CORS
@@ -340,4 +432,4 @@ Este projeto está licenciado sob a MIT License.
 
 ---
 
-**Última atualização:** Maio 2026
+**Última atualização:** Julho 2026
